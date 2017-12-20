@@ -1,6 +1,10 @@
 package errr
 
-import "log"
+import (
+	"errors"
+	"fmt"
+	"log"
+)
 
 type Orrr struct {
 	ptr *error
@@ -19,11 +23,21 @@ func Is(err ...*error) bool {
 	return New(err...).Err(*err[0])
 }
 
-func (o Orrr) Err(or error) bool {
-	if o.ptr == nil {
-		panic(or)
-	} else {
-		*o.ptr = or
-		return or != nil
+func (o Orrr) Err(or interface{}) bool {
+	switch err := or.(type) {
+	case error:
+		if o.ptr == nil {
+			panic(err)
+		} else {
+			*o.ptr = err
+			return err != nil
+		}
+	default:
+		if s := fmt.Sprint(err); o.ptr == nil {
+			panic(s)
+		} else {
+			*o.ptr = errors.New(s)
+			return len(s) > 0
+		}
 	}
 }
