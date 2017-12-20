@@ -1,11 +1,10 @@
 # Example function (using errr)
 ```go
-func atoi(s string, opt ...*error) int {
-	e := errr.New(opt...)
+func atoi(s string, err ...*error) int {
+	e := errr.New(err...)
 
-	n, err := strconv.Atoi(s)
-	if err != nil {
-		e.Set(err)
+	n, or := strconv.Atoi(s)
+	if e.Err(or) {
 		return 0
 	}
 
@@ -29,4 +28,17 @@ if err != nil {
 }
 
 println(n)
+```
+
+# Error handling (using errr)
+```go
+func test(err ...*error) {
+    n := atoi("123", err...)
+    
+    if errr.Is(err...) {
+        return
+    }
+
+    println(n)
+}
 ```
