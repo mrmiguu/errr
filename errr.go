@@ -8,7 +8,12 @@ import (
 
 // Orr is errr's suffix, acting as an ambiguous conditional and/or setter.
 func Orr(err []*error, v ...interface{}) bool {
-	return new(err).err(v)
+	if L := len(v); L > 1 {
+		log.Fatal("too many errr arguments")
+	} else if L == 1 {
+		return new(err).err(v[0])
+	}
+	return new(err).err(nil)
 }
 
 type orr struct {
@@ -26,7 +31,7 @@ func new(err []*error) orr {
 
 func (o orr) err(v interface{}) bool {
 	if v == nil {
-		return *o.ptr != nil
+		return o.ptr != nil && *o.ptr != nil
 	}
 	switch err := v.(type) {
 	case error:
