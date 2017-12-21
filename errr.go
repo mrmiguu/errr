@@ -6,25 +6,29 @@ import (
 	"log"
 )
 
-type Orrr struct {
+// Orr is errr's suffix, acting as an ambiguous conditional and/or setter.
+func Orr(err []*error, v ...interface{}) bool {
+	return new(err).err(v)
+}
+
+type orr struct {
 	ptr *error
 }
 
-func New(err ...*error) Orrr {
+func new(err []*error) orr {
 	if L := len(err); L > 1 {
 		log.Fatal("too many errr arguments")
 	} else if L == 1 {
-		return Orrr{err[0]}
+		return orr{err[0]}
 	}
-	return Orrr{}
+	return orr{}
 }
 
-func Is(err ...*error) bool {
-	return New(err...).Err(*err[0])
-}
-
-func (o Orrr) Err(or interface{}) bool {
-	switch err := or.(type) {
+func (o orr) err(v interface{}) bool {
+	if v == nil {
+		return *o.ptr != nil
+	}
+	switch err := v.(type) {
 	case error:
 		if o.ptr == nil {
 			panic(err)

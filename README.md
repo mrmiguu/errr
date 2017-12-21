@@ -1,13 +1,12 @@
 # Example function (using errr)
 ```go
 func atoi(s string, err ...*error) int {
-	e := errr.New(err...)
+    n, e := strconv.Atoi(s)
 
-	n, or := strconv.Atoi(s)
-	if e.Err(or) {
+	if errr.Orr(err, e) {
 		return 0
-	}
-
+    }
+    
 	return n
 }
 ```
@@ -35,7 +34,7 @@ println(n)
 func test(err ...*error) {
     n := atoi("123", err...)
     
-    if errr.Is(err...) {
+    if errr.Orr(err) {
         return
     }
 
