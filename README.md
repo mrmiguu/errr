@@ -3,11 +3,11 @@
 func atoi(s string, err ...*error) int {
     n, e := strconv.Atoi(s)
 
-	if errr.Orr(err, e) {
-		return 0
+    if errr.Orr(err, e) {
+        return 0
     }
-    
-	return n
+
+    return n
 }
 ```
 
