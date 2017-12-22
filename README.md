@@ -1,9 +1,9 @@
 # Example function (using errr)
 ```go
-func atoi(s string, err ...*error) int {
-    n, e := strconv.Atoi(s)
+func atoi(s string, e ...*error) int {
+    n, err := strconv.Atoi(s)
 
-    if errr.Orr(err, e) {
+    if errr.Is(e, err) {
         return 0
     }
 
@@ -31,10 +31,10 @@ println(n)
 
 # Error handling (using errr)
 ```go
-func test(err ...*error) {
-    n := atoi("123", err...)
+func test(e ...*error) {
+    n := atoi("123", e...)
     
-    if errr.Orr(err) {
+    if errr.Is(e) {
         return
     }
 

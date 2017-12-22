@@ -6,25 +6,25 @@ import (
 	"log"
 )
 
-// Orr is errr's suffix, acting as an ambiguous conditional and/or setter.
-func Orr(err []*error, v ...interface{}) bool {
+// Is is errr's suffix, acting as an ambiguous conditional and/or setter.
+func Is(e []*error, v ...interface{}) bool {
 	if L := len(v); L > 1 {
 		log.Fatal("too many errr arguments")
 	} else if L == 1 {
-		return new(err).err(v[0])
+		return new(e).err(v[0])
 	}
-	return new(err).err(nil)
+	return new(e).err(nil)
 }
 
 type orr struct {
 	ptr *error
 }
 
-func new(err []*error) orr {
-	if L := len(err); L > 1 {
+func new(e []*error) orr {
+	if L := len(e); L > 1 {
 		log.Fatal("too many errr arguments")
 	} else if L == 1 {
-		return orr{err[0]}
+		return orr{e[0]}
 	}
 	return orr{}
 }
